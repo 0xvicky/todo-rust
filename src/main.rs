@@ -9,13 +9,31 @@ struct Todo {
     is_done: bool,
 }
 
-fn handle_is_done(todo: &mut Todo) {
-    todo.is_done = !todo.is_done;
+fn update_item(list: &mut Vec<Todo>) {
+    let mut id = String::new();
+    io::stdin()
+        .read_line(&mut id)
+        .expect("Cannot read the id from user");
+    //remove the item from the list with some logic
+    let id = id.trim().parse::<u32>().expect("Failed to parse");
+    for todo in list {
+        if todo.id == id {
+            todo.is_done = !todo.is_done;
+        }
+    }
 }
 
-fn update_item() {}
+fn remove_item(list: &mut Vec<Todo>) {
+    //takes the id of the item
+    let mut id = String::new();
+    io::stdin()
+        .read_line(&mut id)
+        .expect("Cannot read the id from user");
+    //remove the item from the list with some logic
+    let id = id.trim().parse::<u32>().expect("Failed to parse");
 
-fn remove_item() {}
+    list.retain(|todo| todo.id != id);
+}
 
 fn add_item(list: &mut Vec<Todo>) {
     println!("Item adding started...");
@@ -68,10 +86,10 @@ fn main() {
                 add_item(&mut todo_list);
             }
             2 => {
-                remove_item();
+                remove_item(&mut todo_list);
             }
             3 => {
-                update_item();
+                update_item(&mut todo_list);
             }
             4 => {
                 display_items(&mut todo_list);
